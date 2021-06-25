@@ -13,8 +13,8 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 currentWeather: payload,
-            };  
+            };
         default:
-            return state
+            return state;
     }
 }

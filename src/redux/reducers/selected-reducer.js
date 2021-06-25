@@ -1,6 +1,6 @@
 const initialState = {
     selectedCities: [],
-    inputValue: " "
+    inputValue: ""
 };
 
 export default (state = initialState, { type, payload }) => {

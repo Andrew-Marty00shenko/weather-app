@@ -1,41 +1,43 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import { Autocomplete} from '@shopify/polaris';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Autocomplete } from '@shopify/polaris';
+
 import axios from "axios";
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import actionsWeather from "../redux/actions/weather-action";
 import actionsSelected from "../redux/actions/selected-action";
 
-export default function AutocompleteExample() {
+export default function SearchField() {
   const [deselectedOptions, setDeselectedOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [options, setOptions] = useState(deselectedOptions);
-  const inputValue = useSelector(state=> state.selectedReducer.currentWeather, shallowEqual);
+  const inputValue = useSelector(state => state.selectedReducer.inputValue);
   const dispatch = useDispatch();
 
-    useEffect(()=>{
-        axios.get('https://restcountries.eu/rest/v2/all')
-        .then(res=> {
-            const options = res.data.map(c=>{
-                return {
-                    value: c.capital,
-                    label: c.capital
-                }
-            });
-            setDeselectedOptions(options);
-        })
-    },[]);
+  useEffect(() => {
+    axios.get('https://restcountries.eu/rest/v2/all')
+      .then(res => {
+        const options = res.data.map(c => {
+          return {
+            value: c.capital,
+            label: c.capital
+          }
+        });
+        setDeselectedOptions(options);
+      })
+  }, []);
 
   const updateText = useCallback(
-    (e) => {
-        console.log(e)
-      dispatch(actionsSelected.onChangeInputValue(e));
+    (event) => {
+      dispatch(actionsSelected.onChangeInputValue(event));
 
-      if (e === '') {
+      if (event === '') {
         setOptions(deselectedOptions);
         return;
       }
 
-      const filterRegex = new RegExp(e, 'i');
+      const filterRegex = new RegExp(event, 'i');
       const resultOptions = deselectedOptions.filter((option) =>
         option.label.match(filterRegex),
       );
@@ -63,7 +65,7 @@ export default function AutocompleteExample() {
   );
 
   return (
-    <div style={{height: '225px'}}>
+    <div style={{ height: '225px' }}>
       <Autocomplete
         options={options}
         selected={selectedOptions}

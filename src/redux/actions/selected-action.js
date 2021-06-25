@@ -1,9 +1,9 @@
 const actions = {
-    onSelectedCities: (city)=>({
+    onSelectedCities: (city) => ({
         type: 'CITY:SELECT_CITY',
         payload: city
     }),
-    onChangeInputValue: (value)=>({
+    onChangeInputValue: (value) => ({
         type: 'CITY:INPUT_VALUE',
         payload: value
     })
